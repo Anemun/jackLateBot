@@ -6,6 +6,7 @@ currentYear = "2018"
 databaseFilePath = ""
 
 def init(databaseName, year):
+    global databaseFilePath, currentYear
     databaseFilePath = databaseName
     currentYear = year
     createTableIfNotExist()
