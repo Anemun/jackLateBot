@@ -60,7 +60,7 @@ def getUsersWithNames():
 
 
 # запись в базу. Переписать, тут что-то неправильно
-def writeToDatabase(user, date, late: int =0, work: int =0, comment: str =""):
+def writeToDatabase(user, date, late:int=0, work: int =0, comment: str =""):
     if late > 0:
         runQuery("INSERT INTO times (userId, date, type, time, comment) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')"
                  .format(user, date, "late", late, comment))
@@ -76,7 +76,7 @@ def writeHistory(username, date, message):
 
 # получить историю
 def getHistory():    
-    result = runQuery("SELECT date, username, message FROM history ORDER BY Id DESC LIMIT 100")    
+    result = runQuery("SELECT date, username, message FROM history ORDER BY Id DESC LIMIT 50")    
     return result
 
 
