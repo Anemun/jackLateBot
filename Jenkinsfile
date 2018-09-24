@@ -6,6 +6,7 @@ pipeline {
         BOT_TOKEN = "${params.botToken}"
         DATABASE_PATH_LOCAL = "${params.databasePath}"
         DATABASE_PATH_CONTAINER = "/usr/storage"
+        DATABASE_FILENAME = "${params.databaseName}"
     }
     stages {         
         stage ('1. Build image'){
@@ -38,7 +39,7 @@ pipeline {
                                     string(credentialsId: 'ServerIP', variable: 'IP')]) { 
                                 sh "ssh -o StrictHostKeyChecking=no $IP docker login -u $USERNAME -p $PASSWORD"
                                 sh "ssh -o StrictHostKeyChecking=no $IP docker pull $DOCKER_IMAGE"
-                                sh "ssh -o StrictHostKeyChecking=no $IP docker run -d --restart always -v /etc/localtime:/etc/localtime:ro -v $DATABASE_PATH_LOCAL:$DATABASE_PATH_CONTAINER --name $CONTAINER_NAME $DOCKER_IMAGE --botToken $BOT_TOKEN --databasePath $DATABASE_PATH_CONTAINER"
+                                sh "ssh -o StrictHostKeyChecking=no $IP docker run -d --restart always -v /etc/localtime:/etc/localtime:ro -v $DATABASE_PATH_LOCAL:$DATABASE_PATH_CONTAINER --name $CONTAINER_NAME $DOCKER_IMAGE --botToken $BOT_TOKEN --databasePath $DATABASE_PATH_CONTAINER/$DATABASE_FILENAME"
                             }
                         }
                     }
