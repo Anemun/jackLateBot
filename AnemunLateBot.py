@@ -2,14 +2,19 @@
 
 import telebot
 import databaseProvider
-from sys import argv
+import argparse, sys
 from telebot import types
 from datetime import datetime
 
-TELEGRAM_BOT_TOKEN = argv[1]
-DATABASE_FILE = argv[2]
+parser=argparse.ArgumentParser()
+parser.add_argument('--botToken', help='telegram bot token')
+parser.add_argument('--databasePath', help='pathtoDatabase')
+args=parser.parse_args()
 
-version = "1.12-20180816"
+TELEGRAM_BOT_TOKEN = args.botToken
+DATABASE_FILE = args.databasePath
+
+version = "1.2.0-20180924"
 
 timeFormat = '%Y-%m-%d %H:%M:%S'
 
