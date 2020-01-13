@@ -214,7 +214,7 @@ def callback_inline(call):
             if reply == "":
                 reply = "Ошибка обработки. Обратитесь к автору бота (method: {0}, args: {1}".format(calldataMethod, calldataArgs)
             bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
-            bot.send_message(chat_id=call.message.chat.id, text=reply)
+            bot.send_message(chat_id=call.message.chat.id, text=reply, parse_mode="HTML")
             
 
         # Обработка запроса на вывод всех записей пользователя за месяц. Шаг А - юзер уже выбран и надо выбрать месяц

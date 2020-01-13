@@ -48,7 +48,7 @@ def createTableIfNotExist():
 
 
 def getUsersList():
-    dbResult = runQuery("SELECT username FROM users")
+    dbResult = runQuery("SELECT username FROM users ORDER BY username")
     result = []
     for i in range(0, len(dbResult)):
         result.append(dbResult[i][0])

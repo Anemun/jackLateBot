@@ -1,6 +1,7 @@
 # В этом файле идёт обработка коллбэков
 
 import databaseProvider
+from texttable import Texttable
 from datetime import datetime
 
 # Получить числа недели из номера недели
@@ -96,22 +97,33 @@ def statAllUsers(callArgs):
         if len(month) == 1:                          # datetime.now().month возвращает месяц без ведущего нуля. Надо скорректировать.
             month = '0{0}'.format(month)
         stat = databaseProvider.getResultAllUsers(month=month)
-        reply = "Статистика по всем пользователям за месяц {0}:\n".format(month)
+
+        reply = "<pre>Статистика по всем пользователям за месяц {0}:\n".format(month)
+        table = Texttable()
+        table.set_deco(Texttable.BORDER | Texttable.HEADER)
+        table.set_header_align(["c", "c", "c", "c"])
+        table.header(["СОТРУДНИК", "ПЕРЕР.", "ОПОЗД.", "ИТОГО"])
         for i in range(0, len(stat)):
             userStat = stat[i]
-            reply += "\n{0}: пер: {1}, оп: {2}, итог: {3}" \
-                      .format(userStat[3], userStat[0], userStat[1], userStat[2])
+            table.add_row([userStat[3], userStat[0], userStat[1], userStat[2]])
+        reply += table.draw() 
+        reply +="</pre>"
 
     elif calldataArgs[0] == "full":
         month = str(datetime.now().month)
         if len(month) == 1:                          # datetime.now().month возвращает месяц без ведущего нуля. Надо скорректировать.
             month = '0{0}'.format(month)
         stat = databaseProvider.getResultAllUsers(month="00", full=True)
-        reply = "Статистика по всем пользователям за всё время:\n"
+        reply = "<pre>Статистика по всем пользователям за всё время:\n"
+        table = Texttable()
+        table.set_deco(Texttable.BORDER | Texttable.HEADER)
+        table.set_header_align(["c", "c", "c", "c"])
+        table.header(["СОТРУДНИК", "ПЕРЕР.", "ОПОЗД.", "ИТОГО"])
         for i in range(0, len(stat)):
             userStat = stat[i]
-            reply += "\n{0}: пер: {1}, оп: {2}, итог: {3}"\
-                        .format(userStat[3], userStat[0], userStat[1], userStat[2])
+            table.add_row([userStat[3], userStat[0], userStat[1], userStat[2]])
+        reply += table.draw() 
+        reply +="</pre>"
 
     elif calldataArgs[0] == "lastWeek":
         lastWeek = datetime.isocalendar(datetime.now())[1] - 1
@@ -142,11 +154,16 @@ def statAllUsers(callArgs):
         if len(month) == 1:                          # datetime.now().month возвращает месяц без ведущего нуля. Надо скорректировать.
             month = '0{0}'.format(month)
         stat = databaseProvider.getResultAllUsers(month=month)
-        reply = "Статистика по всем пользователям за месяц {0}:\n".format(month)
+        reply = "<pre>Статистика по всем пользователям за месяц {0}:\n".format(month)
+        table = Texttable()
+        table.set_deco(Texttable.BORDER | Texttable.HEADER)
+        table.set_header_align(["c", "c", "c", "c"])
+        table.header(["СОТРУДНИК", "ПЕРЕР.", "ОПОЗД.", "ИТОГО"])
         for i in range(0, len(stat)):
             userStat = stat[i]
-            reply += "\n{0}: пер: {1}, оп: {2}, итог: {3}" \
-                      .format(userStat[3], userStat[0], userStat[1], userStat[2])
+            table.add_row([userStat[3], userStat[0], userStat[1], userStat[2]])
+        reply += table.draw() 
+        reply +="</pre>"
 
     return reply
 
