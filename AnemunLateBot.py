@@ -14,7 +14,7 @@ args=parser.parse_args()
 TELEGRAM_BOT_TOKEN = args.botToken
 DATABASE_FILE = args.databasePath
 
-version = "1.2.0-20180924"
+version = "1.3.0-20200113"
 
 timeFormat = '%Y-%m-%d %H:%M:%S'
 
