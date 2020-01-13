@@ -200,20 +200,31 @@ def consolidateDatabase(date):
     users = getUsersList()
     for i in range(0, len(users)):
         userId = getUserIdByUsername(users[i])[0]
-        timeSum = runQuery(
+        late=work=0
+        work = runQuery(
             "SELECT sum(time) FROM times "            
-            "WHERE userId='{0}' "            
-            .format(userId))
+            "WHERE userId='{0}'"
+            "AND type = 'work' "            
+            .format(userId))[0][0]
+        late = runQuery(
+            "SELECT sum(time) FROM times "            
+            "WHERE userId='{0}'"
+            "AND type = 'late' "            
+            .format(userId))[0][0]
+        if late == None: late = 0
+        if work == None: work = 0
+        timeSum = work-late
         runQuery(
             "DELETE from times "
-            "WHERE userId='{0}'")
+            "WHERE userId='{0}'"
+            .format(userId))
 
         if timeSum > 0:
             runQuery("INSERT INTO times (userId, date, type, time, comment) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')"
                     .format(userId, date, "work", timeSum, "Консолидация времени"))
         elif timeSum < 0:
             runQuery("INSERT INTO times (userId, date, type, time, comment) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')"
-                    .format(userId, date, "late", timeSum, "Консолидация времени"))
+                    .format(userId, date, "late", timeSum*(-1), "Консолидация времени"))
 
 
 def getUserIdByUsername(username):
