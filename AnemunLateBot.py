@@ -168,6 +168,12 @@ def getUsers(message):
         reply += "\n{0} ({1} {2})".format(result[i][0], result[i][1], result[i][2])
     bot.send_message(chat_id=message.chat.id, text=reply)    
 
+# Консолидация времени
+@bot.message_handler(commands=["consolidate"])
+def consolidateTimes(message):    
+    databaseProvider.consolidateDatabase(date=str(datetime.now().strftime(timeFormat)))
+    bot.send_message(chat_id=message.chat.id, text="Консолидация времени запущена") 
+    
 
 # Обработка коллбэков с данными
 @bot.callback_query_handler(func=lambda call: True)

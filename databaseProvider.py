@@ -1,8 +1,9 @@
 # Файл взаимодействия с базой данных
 
 import sqlite3
+from datetime import datetime
 
-currentYear = "2018"
+currentYear = str(datetime.now().year)
 databaseFilePath = ""
 
 def init(databaseName, year):
@@ -193,6 +194,26 @@ def getResultListByType(userId: int, month: str):
         "ORDER BY date ASC"
         .format(month, currentYear, userId))
     return (resultWork,resultLate)
+
+
+def consolidateDatabase(date):
+    users = getUsersList()
+    for i in range(0, len(users)):
+        userId = getUserIdByUsername(users[i])[0]
+        timeSum = runQuery(
+            "SELECT sum(time) FROM times "            
+            "WHERE userId='{0}' "            
+            .format(userId))
+        runQuery(
+            "DELETE from times "
+            "WHERE userId='{0}'")
+
+        if timeSum > 0:
+            runQuery("INSERT INTO times (userId, date, type, time, comment) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')"
+                    .format(userId, date, "work", timeSum, "Консолидация времени"))
+        elif timeSum < 0:
+            runQuery("INSERT INTO times (userId, date, type, time, comment) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')"
+                    .format(userId, date, "late", timeSum, "Консолидация времени"))
 
 
 def getUserIdByUsername(username):
